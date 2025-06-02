@@ -1,5 +1,5 @@
 import express from 'express';
-import { AppDataSource } from './config/data-source.js';
+import { AppDataSource } from './config/database.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -10,9 +10,9 @@ app.use(express.json());
 // Inicializa a conexão com o banco e inicia o servidor
 AppDataSource.initialize()
   .then(() => {
-    console.log('📦 Banco de dados conectado com sucesso!');
+    console.log('Banco de dados conectado com sucesso!');
     app.listen(port, () => {
-      console.log(`🚀 Servidor rodando em http://localhost:${port}`);
+      console.log(`Servidor rodando em http://localhost:${port}`);
     });
   })
   .catch((error) => {
