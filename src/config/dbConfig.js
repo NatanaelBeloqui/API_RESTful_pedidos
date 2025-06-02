@@ -1,5 +1,7 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import { User } from '../models/user.js';
+import { Category } from '../models/category.js';
+import { Product } from '../models/product.js';
+import { Order } from '../models/order.js';
 
 export const dbConfig = {
   type: 'mysql',
@@ -8,6 +10,6 @@ export const dbConfig = {
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  entities: ['./src/models/user.js'],
   synchronize: true,
+  entities: [User, Category, Product, Order],
 };
