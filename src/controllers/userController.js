@@ -1,61 +1,99 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { AppDataSource } from '../config/database.js';
 import { User } from '../models/user.js';
 
-const userRepository = AppDataSource.getRepository(User);
+const saltRounds = 10; // Para o bcrypt
 
-// Função para criar (cadastrar) um novo usuário
+// Criar usuário
 export const createUser = async (req, res) => {
   try {
-    const { nome, email, senha } = req.body;
+    const { username, password, role } = req.body;
 
-    const existingUser = await userRepository.findOneBy({ email });
+    // Verificar se já existe usuário com o mesmo username
+    const existingUser = await User.findOne({ where: { username } });
     if (existingUser) {
-      return res.status(400).json({ message: 'Usuário já cadastrado com este e-mail.' });
+      return res.status(400).json({ message: 'Usuário já existe.' });
     }
 
-    const hashedPassword = await bcrypt.hash(senha, 10);
+    // Hash da senha
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    const newUser = userRepository.create({
-      nome,
-      email,
-      senha: hashedPassword,
-    });
+    // Criar usuário no banco
+    const newUser = await User.create({ username, password: hashedPassword, role });
 
-    await userRepository.save(newUser);
-
-    res.status(201).json({ message: 'Usuário criado com sucesso!' });
+    return res.status(201).json({ id: newUser.id, username: newUser.username, role: newUser.role });
   } catch (error) {
-    console.error('Erro ao criar usuário:', error);
-    res.status(500).json({ message: 'Erro interno do servidor.' });
+    return res.status(500).json({ message: 'Erro ao criar usuário.', error: error.message });
   }
 };
 
-// Função para login e geração de token JWT
+// Login do usuário
 export const loginUser = async (req, res) => {
   try {
-    const { email, senha } = req.body;
+    const { username, password } = req.body;
 
-    const user = await userRepository.findOneBy({ email });
-    if (!user) {
-      return res.status(401).json({ message: 'Credenciais inválidas.' });
-    }
+    // Buscar usuário
+    const user = await User.findOne({ where: { username } });
+    if (!user) return res.status(400).json({ message: 'Usuário ou senha inválidos.' });
 
-    const passwordMatch = await bcrypt.compare(senha, user.senha);
-    if (!passwordMatch) {
-      return res.status(401).json({ message: 'Credenciais inválidas.' });
-    }
+    // Comparar senha
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) return res.status(400).json({ message: 'Usuário ou senha inválidos.' });
 
+    // Gerar token JWT
     const token = jwt.sign(
-      { id: user.id, email: user.email },
+      { id: user.id, username: user.username, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN }
     );
 
-    res.status(200).json({ token });
+    return res.json({ token });
   } catch (error) {
-    console.error('Erro no login:', error);
-    res.status(500).json({ message: 'Erro interno do servidor.' });
+    return res.status(500).json({ message: 'Erro ao fazer login.', error: error.message });
+  }
+};
+
+// Listar usuários (somente admin)
+export const getUsers = async (req, res) => {
+  try {
+    const users = await User.findAll({ attributes: ['id', 'username', 'role'] });
+    return res.json(users);
+  } catch (error) {
+    return res.status(500).json({ message: 'Erro ao listar usuários.', error: error.message });
+  }
+};
+
+// Atualizar usuário
+export const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { username, password, role } = req.body;
+
+    const user = await User.findByPk(id);
+    if (!user) return res.status(404).json({ message: 'Usuário não encontrado.' });
+
+    if (username) user.username = username;
+    if (password) user.password = await bcrypt.hash(password, saltRounds);
+    if (role) user.role = role;
+
+    await user.save();
+    return res.json({ message: 'Usuário atualizado com sucesso.' });
+  } catch (error) {
+    return res.status(500).json({ message: 'Erro ao atualizar usuário.', error: error.message });
+  }
+};
+
+// Deletar usuário
+export const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findByPk(id);
+    if (!user) return res.status(404).json({ message: 'Usuário não encontrado.' });
+
+    await user.destroy();
+    return res.json({ message: 'Usuário deletado com sucesso.' });
+  } catch (error) {
+    return res.status(500).json({ message: 'Erro ao deletar usuário.', error: error.message });
   }
 };
