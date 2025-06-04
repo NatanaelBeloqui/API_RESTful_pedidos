@@ -1,11 +1,26 @@
 import { Router } from 'express';
-import { getUsers } from '../controllers/userController.js';
+import * as userController from '../controllers/userController.js';
 import { checkAuth } from '../middlewares/checkAuth.js';
-import { checkRole } from '../middlewares/checkRole.js';
+import { isAdmin } from '../middlewares/isAdmin.js';
 
 const router = Router();
 
-// Usuários (exemplo: somente admin pode listar usuários)
-router.get('/', checkAuth, checkRole('admin'), getUsers);
+// Rota pública (criar conta)
+router.post('/', userController.createUser);
+
+// Rota pública (login)
+router.post('/login', userController.loginUser);
+
+// Rota protegida (qualquer usuário logado)
+router.get('/me', checkAuth, (req, res) => {
+  res.json({ user: req.user }); // Exemplo de rota protegida
+});
+
+// Rota protegida (apenas administradores)
+router.get('/', checkAuth, isAdmin, userController.getUsers);
+
+// Atualizar e deletar também devem ser protegidas (por segurança)
+router.put('/:id', checkAuth, isAdmin, userController.updateUser);
+router.delete('/:id', checkAuth, isAdmin, userController.deleteUser);
 
 export default router;
