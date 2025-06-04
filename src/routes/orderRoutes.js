@@ -6,23 +6,23 @@ import {
   updateOrder,
   deleteOrder,
 } from '../controllers/orderController.js';
-import { checkAuth } from '../middlewares/checkAuth.js';
+import { verifyToken } from '../middlewares/verifyToken.js'; // ✅ Esse é o correto
 
 const router = Router();
 
 // Criar pedido
-router.post('/', checkAuth, createOrder);
+router.post('/', verifyToken, createOrder);
 
 // Listar todos os pedidos
-router.get('/', checkAuth, getAllOrders);
+router.get('/', verifyToken, getAllOrders);
 
 // Buscar pedido por ID
-router.get('/:id', checkAuth, getOrderById);
+router.get('/:id', verifyToken, getOrderById);
 
 // Atualizar pedido
-router.put('/:id', checkAuth, updateOrder);
+router.put('/:id', verifyToken, updateOrder);
 
 // Deletar pedido
-router.delete('/:id', checkAuth, deleteOrder);
+router.delete('/:id', verifyToken, deleteOrder);
 
 export default router;
