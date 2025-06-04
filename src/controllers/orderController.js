@@ -1,7 +1,8 @@
-import { AppDataSource } from '../config/database.js';
-import { Order } from '../models/order.js';
-import { User } from '../models/user.js';
-import { Product } from '../models/product.js';
+import { AppDataSource } from "../config/database.js";
+import { Order } from "../models/order.js";
+import { User } from "../models/user.js";
+import { Product } from "../models/product.js";
+import { In } from "typeorm";
 
 const orderRepo = AppDataSource.getRepository(Order);
 const userRepo = AppDataSource.getRepository(User);
@@ -13,18 +14,26 @@ export const createOrder = async (req, res) => {
     const { userId, productIds } = req.body;
 
     const user = await userRepo.findOneBy({ id: parseInt(userId) });
-    if (!user) return res.status(404).json({ message: 'Usuário não encontrado' });
+    if (!user)
+      return res.status(404).json({ message: "Usuário não encontrado" });
 
-    const products = await productRepo.findByIds(productIds);
+    const products = await productRepo.findBy({
+      id: In(productIds),
+    });
+
     if (products.length !== productIds.length)
-      return res.status(400).json({ message: 'Um ou mais produtos são inválidos' });
+      return res
+        .status(400)
+        .json({ message: "Um ou mais produtos são inválidos" });
 
     const order = orderRepo.create({ user, products });
     await orderRepo.save(order);
 
     res.status(201).json(order);
   } catch (error) {
-    res.status(500).json({ message: 'Erro ao criar pedido', error: error.message });
+    res
+      .status(500)
+      .json({ message: "Erro ao criar pedido", error: error.message });
   }
 };
 
@@ -32,11 +41,13 @@ export const createOrder = async (req, res) => {
 export const getAllOrders = async (req, res) => {
   try {
     const orders = await orderRepo.find({
-      relations: ['user', 'products'],
+      relations: ["user", "products"],
     });
     res.json(orders);
   } catch (error) {
-    res.status(500).json({ message: 'Erro ao buscar pedidos', error: error.message });
+    res
+      .status(500)
+      .json({ message: "Erro ao buscar pedidos", error: error.message });
   }
 };
 
@@ -47,14 +58,17 @@ export const getOrderById = async (req, res) => {
 
     const order = await orderRepo.findOne({
       where: { id: parseInt(id) },
-      relations: ['user', 'products'],
+      relations: ["user", "products"],
     });
 
-    if (!order) return res.status(404).json({ message: 'Pedido não encontrado' });
+    if (!order)
+      return res.status(404).json({ message: "Pedido não encontrado" });
 
     res.json(order);
   } catch (error) {
-    res.status(500).json({ message: 'Erro ao buscar pedido', error: error.message });
+    res
+      .status(500)
+      .json({ message: "Erro ao buscar pedido", error: error.message });
   }
 };
 
@@ -66,15 +80,20 @@ export const updateOrder = async (req, res) => {
 
     const order = await orderRepo.findOne({
       where: { id: parseInt(id) },
-      relations: ['products', 'user'],
+      relations: ["products", "user"],
     });
 
-    if (!order) return res.status(404).json({ message: 'Pedido não encontrado' });
+    if (!order)
+      return res.status(404).json({ message: "Pedido não encontrado" });
 
     if (productIds && productIds.length > 0) {
-      const products = await productRepo.findByIds(productIds);
+      const products = await productRepo.findBy({
+        id: In(productIds),
+      });
       if (products.length !== productIds.length)
-        return res.status(400).json({ message: 'Um ou mais produtos são inválidos' });
+        return res
+          .status(400)
+          .json({ message: "Um ou mais produtos são inválidos" });
 
       order.products = products;
     }
@@ -82,7 +101,9 @@ export const updateOrder = async (req, res) => {
     await orderRepo.save(order);
     res.json(order);
   } catch (error) {
-    res.status(500).json({ message: 'Erro ao atualizar pedido', error: error.message });
+    res
+      .status(500)
+      .json({ message: "Erro ao atualizar pedido", error: error.message });
   }
 };
 
@@ -92,11 +113,14 @@ export const deleteOrder = async (req, res) => {
     const { id } = req.params;
 
     const order = await orderRepo.findOneBy({ id: parseInt(id) });
-    if (!order) return res.status(404).json({ message: 'Pedido não encontrado' });
+    if (!order)
+      return res.status(404).json({ message: "Pedido não encontrado" });
 
     await orderRepo.remove(order);
-    res.json({ message: 'Pedido deletado com sucesso' });
+    res.json({ message: "Pedido deletado com sucesso" });
   } catch (error) {
-    res.status(500).json({ message: 'Erro ao deletar pedido', error: error.message });
+    res
+      .status(500)
+      .json({ message: "Erro ao deletar pedido", error: error.message });
   }
 };
