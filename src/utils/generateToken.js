@@ -1,9 +1,12 @@
 import jwt from 'jsonwebtoken';
 
+const SECRET_KEY = process.env.JWT_SECRET || 'secreta123';
+
 export const generateToken = (user) => {
-  return jwt.sign(
-    { id: user.id, role: user.role },
-    process.env.JWT_SECRET,
-    { expiresIn: '1d' }
-  );
+  const payload = {
+    id: user.id,
+    role: user.role,
+  };
+
+  return jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
 };

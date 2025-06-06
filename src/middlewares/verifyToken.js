@@ -1,21 +1,24 @@
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'segredo123'; // Ideal: usar .env
+const SECRET_KEY = process.env.JWT_SECRET || 'secreta123';
 
 export const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ message: 'Token não fornecido ou mal formatado' });
+  if (!authHeader) {
+    return res.status(401).json({ message: 'Token não fornecido' });
   }
 
   const token = authHeader.split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ message: 'Token mal formatado' });
+  }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded; // Salva os dados do token (como userId, email, role) no request
+    const decoded = jwt.verify(token, SECRET_KEY);
+    req.user = decoded; // id e role estarão aqui
     next();
   } catch (error) {
-    return res.status(403).json({ message: 'Token inválido ou expirado' });
+    return res.status(401).json({ message: 'Token inválido ou expirado' });
   }
 };
