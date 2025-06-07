@@ -63,6 +63,20 @@ export const getUsers = async (req, res) => {
   }
 };
 
+export const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findOne({ where: { id }, attributes: ['id', 'username', 'role'] });
+
+    if (!user) return res.status(404).json({ message: 'Usuário não encontrado.' });
+
+    return res.json(user);
+  } catch (error) {
+    return res.status(500).json({ message: 'Erro ao buscar usuário.', error: error.message });
+  }
+};
+
+
 // Atualizar usuário
 export const updateUser = async (req, res) => {
   try {
