@@ -4,7 +4,7 @@ dotenv.config();
 import express from 'express';
 const app = express();
 
-import sequelize from './config/database.js'; // note o '.js'
+import sequelize from './config/database.js';
 
 app.use(express.json());
 
