@@ -1,8 +1,8 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/database.js';
-import User from './User.js';
-import Product from './Product.js';
-import OrderProduct from './OrderProduct.js';
+import User from './user.js';
+import Product from './product.js';
+import OrderProduct from './orderProduct.js';
 
 class Order extends Model {}
 
@@ -28,11 +28,9 @@ Order.init({
   timestamps: false,
 });
 
-// Associação N:1 com User
 Order.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 User.hasMany(Order, { foreignKey: 'userId', as: 'userOrders' });
 
-// Associação N:N com Product via OrderProduct
 Order.belongsToMany(Product, {
   through: OrderProduct,
   foreignKey: 'order_id',

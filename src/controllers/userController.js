@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { User } from '../models/index.js'; // Ajuste conforme sua estrutura
+import { User } from '../models/index.js';
 
 const saltRounds = 10;
 
@@ -7,13 +7,11 @@ export const createUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Verificar se email já existe
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
       return res.status(409).json({ message: 'Email já cadastrado.' });
     }
 
-    // Hashear a senha
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const user = await User.create({ name, email, password: hashedPassword });
@@ -28,7 +26,7 @@ export const createUser = async (req, res) => {
 export const findAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({
-      attributes: { exclude: ['password'] } // não retornar senha
+      attributes: { exclude: ['password'] }
     });
     return res.json(users);
   } catch (error) {
@@ -66,18 +64,14 @@ export const updateUser = async (req, res) => {
       return res.status(404).json({ message: 'Usuário não encontrado.' });
     }
 
-    // Atualiza campos básicos
     if (name) user.name = name;
     if (email) user.email = email;
-
-    // Se tiver senha nova, hash ela
     if (password) {
       user.password = await bcrypt.hash(password, saltRounds);
     }
 
     await user.save();
 
-    // Retorna sem senha
     const { password: _, ...userWithoutPassword } = user.toJSON();
 
     return res.json(userWithoutPassword);
@@ -98,7 +92,7 @@ export const deleteUser = async (req, res) => {
 
     await user.destroy();
 
-    return res.status(204).send(); // No Content
+    return res.status(204).send();
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Erro ao deletar usuário.' });

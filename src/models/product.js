@@ -1,8 +1,8 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/database.js';
-import Category from './Category.js';
-import Order from './Order.js';
-import OrderProduct from './OrderProduct.js';
+import Category from './category.js';
+import Order from './order.js';
+import OrderProduct from './orderProduct.js';
 
 class Product extends Model {}
 
@@ -22,7 +22,7 @@ Product.init({
   },
   categoryId: {
     type: DataTypes.INTEGER,
-    allowNull: true, // Permite NULL conforme ON DELETE SET NULL no banco
+    allowNull: true,
     references: {
       model: 'categories',
       key: 'id',
@@ -36,11 +36,9 @@ Product.init({
   timestamps: false,
 });
 
-// Associação 1:N com Category
 Product.belongsTo(Category, { foreignKey: 'categoryId', as: 'category' });
 Category.hasMany(Product, { foreignKey: 'categoryId', as: 'products' });
 
-// Associação N:N com Order via OrderProduct
 Product.belongsToMany(Order, {
   through: OrderProduct,
   foreignKey: 'product_id',

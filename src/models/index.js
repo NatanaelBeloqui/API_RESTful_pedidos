@@ -1,12 +1,11 @@
 import sequelize from '../config/database.js';
 
-import User from './User.js';
-import Category from './Category.js';
-import Product from './Product.js';
-import Order from './Order.js';
-import OrderProduct from './OrderProduct.js';
+import User from './user.js';
+import Category from './category.js';
+import Product from './product.js';
+import Order from './order.js';
+import OrderProduct from './orderProduct.js';
 
-// Definindo associações (se ainda não definidas dentro dos models)
 User.hasMany(Order, { foreignKey: 'userId', as: 'userOrders' });
 Order.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 

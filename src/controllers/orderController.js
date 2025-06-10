@@ -2,7 +2,7 @@ import { Order, Product, User } from '../models/index.js';
 
 export const createOrder = async (req, res) => {
   try {
-    const { userId, products } = req.body; // products = [{ productId, quantity }, ...]
+    const { userId, products } = req.body;
 
     const user = await User.findByPk(userId);
     if (!user) return res.status(400).json({ message: 'Usuário inválido.' });
@@ -11,10 +11,8 @@ export const createOrder = async (req, res) => {
       return res.status(400).json({ message: 'Produtos são obrigatórios.' });
     }
 
-    // Criar o pedido
     const order = await Order.create({ userId });
 
-    // Associar produtos ao pedido via tabela intermediária
     for (const item of products) {
       const product = await Product.findByPk(item.productId);
       if (!product) {
@@ -24,7 +22,6 @@ export const createOrder = async (req, res) => {
       await order.addProduct(product, { through: { quantity: item.quantity || 1 } });
     }
 
-    // Retorna o pedido completo com produtos
     const orderWithProducts = await Order.findByPk(order.id, {
       include: {
         model: Product,
