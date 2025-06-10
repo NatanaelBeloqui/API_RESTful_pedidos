@@ -5,6 +5,7 @@ import express from 'express';
 const app = express();
 
 import sequelize from './config/database.js';
+import router from './routes/index.js';
 
 app.use(express.json());
 
@@ -15,6 +16,8 @@ sequelize.authenticate()
 sequelize.sync()
   .then(() => console.log('Modelos sincronizados com o banco de dados.'))
   .catch(err => console.error('Erro ao sincronizar modelos:', err));
+
+app.use('/api', router);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
