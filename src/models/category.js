@@ -1,16 +1,24 @@
-import { EntitySchema } from 'typeorm';
+import { DataTypes, Model } from 'sequelize';
+import sequelize from '../config/database.js';
 
-export const Category = new EntitySchema({
-  name: 'Category',
-  tableName: 'categories',
-  columns: {
-    id: {
-      primary: true,
-      type: 'int',
-      generated: true,
-    },
-    name: {
-      type: 'varchar',
-    },
+class Category extends Model {}
+
+Category.init({
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
   },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+}, {
+  sequelize,
+  modelName: 'Category',
+  tableName: 'categories',
+  timestamps: false,
 });
+
+export default Category;
