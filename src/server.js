@@ -1,13 +1,16 @@
 import dotenv from 'dotenv';
-dotenv.config();
-
 import express from 'express';
-const app = express();
-
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpecs from './docs/swagger.js';
 import sequelize from './config/database.js';
 import router from './routes/index.js';
 
+dotenv.config();
+const app = express();
+
 app.use(express.json());
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 sequelize.authenticate()
   .then(() => console.log('Conexão com o banco de dados estabelecida com sucesso.'))
