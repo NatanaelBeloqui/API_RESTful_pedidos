@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import auth from '../middlewares/authMiddleware.js';
-import * as orderController from '../controllers/orderController.js';
+import orderController from '../controllers/orderController.js';
 
 /**
  * @swagger
@@ -24,8 +24,12 @@ import * as orderController from '../controllers/orderController.js';
  *           schema:
  *             type: object
  *             required:
+ *               - userId
  *               - products
  *             properties:
+ *               userId:
+ *                 type: integer
+ *                 example: 3
  *               products:
  *                 type: array
  *                 description: Lista de produtos com seus respectivos IDs e quantidades
@@ -43,7 +47,7 @@ import * as orderController from '../controllers/orderController.js';
  *         description: Pedido criado com sucesso
  *       400:
  *         description: Dados inválidos
-
+ *
  *   get:
  *     summary: Lista todos os pedidos do usuário autenticado
  *     tags: [Orders]
@@ -103,7 +107,7 @@ import * as orderController from '../controllers/orderController.js';
  *         description: Pedido encontrado
  *       404:
  *         description: Pedido não encontrado
-
+ *
  *   delete:
  *     summary: Cancela um pedido
  *     tags: [Orders]
