@@ -1,6 +1,6 @@
 import { Order, Product, User } from '../models/index.js';
 
-export const createOrder = async (req, res) => {
+const createOrder = async (req, res) => {
   try {
     const { userId, products } = req.body;
 
@@ -36,7 +36,7 @@ export const createOrder = async (req, res) => {
   }
 };
 
-export const findAllOrders = async (req, res) => {
+const findAllOrders = async (req, res) => {
   try {
     const orders = await Order.findAll({
       include: [
@@ -51,7 +51,7 @@ export const findAllOrders = async (req, res) => {
   }
 };
 
-export const findOrderById = async (req, res) => {
+const findOrderById = async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id, {
       include: [
@@ -67,7 +67,7 @@ export const findOrderById = async (req, res) => {
   }
 };
 
-export const updateOrder = async (req, res) => {
+const updateOrder = async (req, res) => {
   try {
     const { products } = req.body;
 
@@ -78,10 +78,8 @@ export const updateOrder = async (req, res) => {
       return res.status(400).json({ message: 'Produtos são obrigatórios.' });
     }
 
-    // Remove produtos antigos
     await order.setProducts([]);
 
-    // Adiciona produtos novos
     for (const item of products) {
       const product = await Product.findByPk(item.productId);
       if (!product) {
@@ -104,7 +102,7 @@ export const updateOrder = async (req, res) => {
   }
 };
 
-export const deleteOrder = async (req, res) => {
+const deleteOrder = async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id);
     if (!order) return res.status(404).json({ message: 'Pedido não encontrado.' });
@@ -114,4 +112,12 @@ export const deleteOrder = async (req, res) => {
     console.error(error);
     return res.status(500).json({ message: 'Erro ao deletar pedido.' });
   }
+};
+
+export default {
+  createOrder,
+  findAllOrders,
+  findOrderById,
+  updateOrder,
+  deleteOrder,
 };

@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import userController from '../controllers/userController.js';
-import auth from '../middleware/authMiddleware.js';
+import * as userController from '../controllers/userController.js';
+import auth from '../middlewares/authMiddleware.js';
 
 /**
  * @swagger
@@ -40,7 +40,10 @@ import auth from '../middleware/authMiddleware.js';
  *         description: Usuário registrado com sucesso
  *       400:
  *         description: Dados inválidos ou usuário já existe
+ */
 
+/**
+ * @swagger
  * /users/login:
  *   post:
  *     summary: Autentica um usuário e retorna um token
@@ -81,7 +84,6 @@ import auth from '../middleware/authMiddleware.js';
  *         description: Perfil retornado com sucesso
  *       401:
  *         description: Token inválido ou ausente
-
  *   put:
  *     summary: Atualiza os dados do perfil do usuário autenticado
  *     tags: [Users]
@@ -105,7 +107,6 @@ import auth from '../middleware/authMiddleware.js';
  *         description: Perfil atualizado com sucesso
  *       401:
  *         description: Não autorizado
-
  *   delete:
  *     summary: Deleta a conta do usuário autenticado
  *     tags: [Users]
@@ -151,7 +152,7 @@ import auth from '../middleware/authMiddleware.js';
 
 const router = Router();
 
-router.post('/register', userController.register);
+router.post('/register', userController.createUser);
 router.post('/login', userController.login);
 
 router.use(auth);
@@ -159,6 +160,6 @@ router.use(auth);
 router.get('/me', userController.getProfile);
 router.put('/me', userController.updateProfile);
 router.put('/me/password', userController.changePassword);
-router.delete('/me', userController.deleteAccount);
+router.delete('/me', userController.deleteUser);
 
 export default router;

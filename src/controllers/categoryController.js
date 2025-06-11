@@ -1,6 +1,6 @@
 import { Category } from '../models/index.js';
 
-export const createCategory = async (req, res) => {
+const createCategory = async (req, res) => {
   try {
     const { name } = req.body;
     const existing = await Category.findOne({ where: { name } });
@@ -13,7 +13,7 @@ export const createCategory = async (req, res) => {
   }
 };
 
-export const findAllCategories = async (req, res) => {
+const findAllCategories = async (req, res) => {
   try {
     const categories = await Category.findAll();
     return res.json(categories);
@@ -23,7 +23,7 @@ export const findAllCategories = async (req, res) => {
   }
 };
 
-export const findCategoryById = async (req, res) => {
+const findCategoryById = async (req, res) => {
   try {
     const category = await Category.findByPk(req.params.id);
     if (!category) return res.status(404).json({ message: 'Categoria não encontrada.' });
@@ -34,7 +34,7 @@ export const findCategoryById = async (req, res) => {
   }
 };
 
-export const updateCategory = async (req, res) => {
+const updateCategory = async (req, res) => {
   try {
     const { name } = req.body;
     const category = await Category.findByPk(req.params.id);
@@ -48,7 +48,7 @@ export const updateCategory = async (req, res) => {
   }
 };
 
-export const deleteCategory = async (req, res) => {
+const deleteCategory = async (req, res) => {
   try {
     const category = await Category.findByPk(req.params.id);
     if (!category) return res.status(404).json({ message: 'Categoria não encontrada.' });
@@ -59,3 +59,13 @@ export const deleteCategory = async (req, res) => {
     return res.status(500).json({ message: 'Erro ao deletar categoria.' });
   }
 };
+
+const categoryController = {
+  getAllCategories: findAllCategories,
+  getCategoryById: findCategoryById,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+};
+
+export default categoryController;

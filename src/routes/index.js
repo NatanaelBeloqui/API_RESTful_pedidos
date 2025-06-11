@@ -3,7 +3,7 @@ import categoryRoutes from './categoryRoutes.js';
 import productRoutes from './productRoutes.js';
 import orderRoutes from './orderRoutes.js';
 import userRoutes from './userRoutes.js';
-import auth from '../middleware/authMiddleware.js';
+import auth from '../middlewares/authMiddleware.js';
 
 const router = Router();
 

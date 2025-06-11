@@ -1,8 +1,12 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { User } from '../models/index.js';
 
 const saltRounds = 10;
+const jwtSecret = process.env.JWT_SECRET || 'secret'; // ajuste para sua variável de ambiente
+const jwtExpiresIn = process.env.JWT_EXPIRES_IN || '1h';
 
+// Criar usuário
 export const createUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -16,30 +20,43 @@ export const createUser = async (req, res) => {
 
     const user = await User.create({ name, email, password: hashedPassword });
 
-    return res.status(201).json(user);
+    return res.status(201).json({ id: user.id, name: user.name, email: user.email });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Erro ao criar usuário.' });
   }
 };
 
-export const findAllUsers = async (req, res) => {
+// Login
+export const login = async (req, res) => {
   try {
-    const users = await User.findAll({
-      attributes: { exclude: ['password'] }
-    });
-    return res.json(users);
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res.status(401).json({ message: 'Credenciais inválidas.' });
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ message: 'Credenciais inválidas.' });
+    }
+
+    const token = jwt.sign({ id: user.id, email: user.email }, jwtSecret, { expiresIn: jwtExpiresIn });
+
+    return res.json({ token });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'Erro ao buscar usuários.' });
+    return res.status(500).json({ message: 'Erro ao realizar login.' });
   }
 };
 
-export const findUserById = async (req, res) => {
+// Retorna perfil do usuário autenticado
+export const getProfile = async (req, res) => {
   try {
-    const { id } = req.params;
+    const userId = req.user.id; // assumindo que authMiddleware já colocou req.user
 
-    const user = await User.findByPk(id, {
+    const user = await User.findByPk(userId, {
       attributes: { exclude: ['password'] }
     });
 
@@ -50,42 +67,66 @@ export const findUserById = async (req, res) => {
     return res.json(user);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'Erro ao buscar usuário.' });
+    return res.status(500).json({ message: 'Erro ao buscar perfil do usuário.' });
   }
 };
 
-export const updateUser = async (req, res) => {
+// Atualizar perfil do usuário autenticado (nome e email)
+export const updateProfile = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { name, email, password } = req.body;
+    const userId = req.user.id;
+    const { name, email } = req.body;
 
-    const user = await User.findByPk(id);
+    const user = await User.findByPk(userId);
     if (!user) {
       return res.status(404).json({ message: 'Usuário não encontrado.' });
     }
 
     if (name) user.name = name;
     if (email) user.email = email;
-    if (password) {
-      user.password = await bcrypt.hash(password, saltRounds);
-    }
 
     await user.save();
 
-    const { password: _, ...userWithoutPassword } = user.toJSON();
-
+    const { password, ...userWithoutPassword } = user.toJSON();
     return res.json(userWithoutPassword);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'Erro ao atualizar usuário.' });
+    return res.status(500).json({ message: 'Erro ao atualizar perfil.' });
   }
 };
 
+// Alterar senha do usuário autenticado
+export const changePassword = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { currentPassword, newPassword } = req.body;
+
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'Usuário não encontrado.' });
+    }
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Senha atual incorreta.' });
+    }
+
+    user.password = await bcrypt.hash(newPassword, saltRounds);
+    await user.save();
+
+    return res.json({ message: 'Senha alterada com sucesso.' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Erro ao alterar senha.' });
+  }
+};
+
+// Deletar conta do usuário autenticado
 export const deleteUser = async (req, res) => {
   try {
-    const { id } = req.params;
+    const userId = req.user.id;
 
-    const user = await User.findByPk(id);
+    const user = await User.findByPk(userId);
     if (!user) {
       return res.status(404).json({ message: 'Usuário não encontrado.' });
     }

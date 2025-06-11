@@ -1,6 +1,13 @@
+// src/routes/productRoutes.js
 import { Router } from 'express';
-import auth from '../middleware/authMiddleware.js';
-import productController from '../controllers/productController.js';
+import auth from '../middlewares/authMiddleware.js';
+import { 
+  createProduct, 
+  findAllProducts, 
+  findProductById, 
+  updateProduct, 
+  deleteProduct 
+} from '../controllers/productController.js';
 
 /**
  * @swagger
@@ -37,7 +44,6 @@ import productController from '../controllers/productController.js';
  *                   categoryId:
  *                     type: integer
  *                     example: 2
-
  *   post:
  *     summary: Cria um novo produto
  *     tags: [Products]
@@ -88,7 +94,6 @@ import productController from '../controllers/productController.js';
  *         description: Produto encontrado
  *       404:
  *         description: Produto não encontrado
-
  *   put:
  *     summary: Atualiza um produto
  *     tags: [Products]
@@ -122,7 +127,6 @@ import productController from '../controllers/productController.js';
  *         description: Produto atualizado com sucesso
  *       404:
  *         description: Produto não encontrado
-
  *   delete:
  *     summary: Remove um produto
  *     tags: [Products]
@@ -144,10 +148,10 @@ import productController from '../controllers/productController.js';
 
 const router = Router();
 
-router.get('/', productController.getAllProducts);
-router.get('/:id', productController.getProductById);
-router.post('/', auth, productController.createProduct);
-router.put('/:id', auth, productController.updateProduct);
-router.delete('/:id', auth, productController.deleteProduct);
+router.get('/', findAllProducts);
+router.get('/:id', findProductById);
+router.post('/', auth, createProduct);
+router.put('/:id', auth, updateProduct);
+router.delete('/:id', auth, deleteProduct);
 
 export default router;
