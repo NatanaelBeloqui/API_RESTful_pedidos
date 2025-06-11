@@ -1,11 +1,33 @@
-import sequelize from '../config/database.js';
+import Sequelize from 'sequelize';
+import dotenv from 'dotenv';
 
-import User from './user.js';
-import Category from './category.js';
-import Product from './product.js';
-import Order from './order.js';
-import OrderProduct from './orderProduct.js';
+import UserModel from './user.js';
+import CategoryModel from './category.js';
+import ProductModel from './product.js';
+import OrderModel from './order.js';
+import OrderProductModel from './orderProduct.js';
 
+dotenv.config();
+
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    dialect: 'mysql',
+    logging: false,
+  }
+);
+
+// Inicializa os models
+const User = UserModel(sequelize);
+const Category = CategoryModel(sequelize);
+const Product = ProductModel(sequelize);
+const Order = OrderModel(sequelize);
+const OrderProduct = OrderProductModel(sequelize);
+
+// Associações
 User.hasMany(Order, { foreignKey: 'userId', as: 'userOrders' });
 Order.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import auth from '../middlewares/authMiddleware.js';
-import orderController from '../controllers/orderController.js';
+import * as orderController from '../controllers/orderController.js';
 
 /**
  * @swagger
