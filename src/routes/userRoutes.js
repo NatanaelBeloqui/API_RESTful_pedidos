@@ -155,7 +155,7 @@ const router = Router();
 router.post('/register', userController.createUser);
 router.post('/login', userController.login);
 
-router.use(auth);
+router.use(auth); // rotas protegidas
 
 router.get('/me', userController.getProfile);
 router.put('/me', userController.updateProfile);

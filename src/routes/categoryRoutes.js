@@ -31,7 +31,6 @@ import categoryController from '../controllers/categoryController.js';
  *                   name:
  *                     type: string
  *                     example: Bebidas
-
  *   post:
  *     summary: Cria uma nova categoria
  *     tags: [Categories]
@@ -85,7 +84,6 @@ import categoryController from '../controllers/categoryController.js';
  *                   example: Bebidas
  *       404:
  *         description: Categoria não encontrada
-
  *   put:
  *     summary: Atualiza uma categoria existente
  *     tags: [Categories]
@@ -113,7 +111,6 @@ import categoryController from '../controllers/categoryController.js';
  *         description: Categoria atualizada com sucesso
  *       404:
  *         description: Categoria não encontrada
-
  *   delete:
  *     summary: Remove uma categoria
  *     tags: [Categories]
