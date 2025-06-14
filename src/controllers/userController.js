@@ -54,7 +54,7 @@ export const login = async (req, res) => {
 // Retorna perfil do usuário autenticado
 export const getProfile = async (req, res) => {
   try {
-    const userId = req.user.id; // assumindo que authMiddleware já colocou req.user
+    const userId = req.user.id;
 
     const user = await User.findByPk(userId, {
       attributes: { exclude: ['password'] }
