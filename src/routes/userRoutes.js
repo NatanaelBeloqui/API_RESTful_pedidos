@@ -21,17 +21,14 @@ import auth from '../middlewares/authMiddleware.js';
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - name
- *               - email
- *               - password
+ *             required: [name, email, password]
  *             properties:
  *               name:
  *                 type: string
  *                 example: Natanael Barros
  *               email:
  *                 type: string
- *                 example: natanael.barros@email.com
+ *                 example: natanael@email.com
  *               password:
  *                 type: string
  *                 example: 123
@@ -54,13 +51,11 @@ import auth from '../middlewares/authMiddleware.js';
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - email
- *               - password
+ *             required: [email, password]
  *             properties:
  *               email:
  *                 type: string
- *                 example: natanael.barros@email.com
+ *                 example: natanael@email.com
  *               password:
  *                 type: string
  *                 example: 123
@@ -133,9 +128,7 @@ import auth from '../middlewares/authMiddleware.js';
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - currentPassword
- *               - newPassword
+ *             required: [currentPassword, newPassword]
  *             properties:
  *               currentPassword:
  *                 type: string

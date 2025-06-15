@@ -15,22 +15,13 @@ import categoryController from '../controllers/categoryController.js';
  *   get:
  *     summary: Lista todas as categorias
  *     tags: [Categories]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de categorias retornada com sucesso
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                     example: 1
- *                   name:
- *                     type: string
- *                     example: Bebidas
+ *       401:
+ *         description: Não autorizado
  *   post:
  *     summary: Cria uma nova categoria
  *     tags: [Categories]
@@ -42,92 +33,91 @@ import categoryController from '../controllers/categoryController.js';
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - name
+ *             required: [name]
  *             properties:
  *               name:
  *                 type: string
- *                 example: Lanches
+ *                 example: Bebidas
  *     responses:
  *       201:
  *         description: Categoria criada com sucesso
  *       400:
  *         description: Dados inválidos
+ *       401:
+ *         description: Não autorizado
  */
 
 /**
  * @swagger
  * /categories/{id}:
  *   get:
- *     summary: Busca uma categoria pelo ID
+ *     summary: Retorna uma categoria específica
  *     tags: [Categories]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
- *       - in: path
- *         name: id
+ *       - name: id
+ *         in: path
  *         required: true
+ *         description: ID da categoria
  *         schema:
  *           type: integer
- *         description: ID da categoria
  *     responses:
  *       200:
- *         description: Categoria encontrada
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: integer
- *                   example: 1
- *                 name:
- *                   type: string
- *                   example: Bebidas
+ *         description: Categoria retornada com sucesso
  *       404:
  *         description: Categoria não encontrada
+ *       401:
+ *         description: Não autorizado
  *   put:
  *     summary: Atualiza uma categoria existente
  *     tags: [Categories]
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - in: path
- *         name: id
+ *       - name: id
+ *         in: path
  *         required: true
+ *         description: ID da categoria
  *         schema:
  *           type: integer
- *         description: ID da categoria
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             required: [name]
  *             properties:
  *               name:
  *                 type: string
- *                 example: Sobremesas
+ *                 example: Comidas
  *     responses:
  *       200:
  *         description: Categoria atualizada com sucesso
  *       404:
  *         description: Categoria não encontrada
+ *       401:
+ *         description: Não autorizado
  *   delete:
- *     summary: Remove uma categoria
+ *     summary: Deleta uma categoria existente
  *     tags: [Categories]
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - in: path
- *         name: id
+ *       - name: id
+ *         in: path
  *         required: true
+ *         description: ID da categoria
  *         schema:
  *           type: integer
- *         description: ID da categoria
  *     responses:
  *       204:
- *         description: Categoria removida com sucesso
+ *         description: Categoria deletada com sucesso
  *       404:
  *         description: Categoria não encontrada
+ *       401:
+ *         description: Não autorizado
  */
 
 const router = Router();

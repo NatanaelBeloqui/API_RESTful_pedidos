@@ -12,8 +12,18 @@ import orderController from '../controllers/orderController.js';
 /**
  * @swagger
  * /orders:
+ *   get:
+ *     summary: Lista os pedidos do usuário autenticado
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lista de pedidos retornada com sucesso
+ *       401:
+ *         description: Não autorizado
  *   post:
- *     summary: Cria um novo pedido
+ *     summary: Cria um novo pedido com os produtos informados
  *     tags: [Orders]
  *     security:
  *       - bearerAuth: []
@@ -28,99 +38,41 @@ import orderController from '../controllers/orderController.js';
  *             properties:
  *               products:
  *                 type: array
- *                 description: Lista de produtos com seus respectivos IDs e quantidades
+ *                 description: Lista de IDs de produtos
  *                 items:
- *                   type: object
- *                   properties:
- *                     productId:
- *                       type: integer
- *                       example: 1
- *                     quantity:
- *                       type: integer
- *                       example: 2
+ *                   type: integer
+ *                 example: [1, 2, 3]
  *     responses:
  *       201:
  *         description: Pedido criado com sucesso
  *       400:
- *         description: Dados inválidos
- *
- *   get:
- *     summary: Lista todos os pedidos do usuário autenticado
- *     tags: [Orders]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: Lista de pedidos retornada com sucesso
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                     example: 1
- *                   userId:
- *                     type: integer
- *                     example: 3
- *                   createdAt:
- *                     type: string
- *                     format: date-time
- *                   products:
- *                     type: array
- *                     items:
- *                       type: object
- *                       properties:
- *                         productId:
- *                           type: integer
- *                         name:
- *                           type: string
- *                         quantity:
- *                           type: integer
- *                         price:
- *                           type: number
+ *         description: Requisição inválida (produtos ausentes ou inválidos)
+ *       401:
+ *         description: Não autorizado
  */
 
 /**
  * @swagger
  * /orders/{id}:
  *   get:
- *     summary: Busca um pedido pelo ID
+ *     summary: Retorna um pedido específico pelo ID
  *     tags: [Orders]
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - in: path
- *         name: id
+ *       - name: id
+ *         in: path
  *         required: true
+ *         description: ID do pedido
  *         schema:
  *           type: integer
- *         description: ID do pedido
  *     responses:
  *       200:
- *         description: Pedido encontrado
+ *         description: Pedido retornado com sucesso
  *       404:
  *         description: Pedido não encontrado
- *
- *   delete:
- *     summary: Cancela um pedido
- *     tags: [Orders]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *         description: ID do pedido a ser cancelado
- *     responses:
- *       204:
- *         description: Pedido cancelado com sucesso
- *       404:
- *         description: Pedido não encontrado
+ *       401:
+ *         description: Não autorizado
  */
 
 const router = Router();
