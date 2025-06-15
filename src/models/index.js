@@ -28,11 +28,11 @@ const Order = OrderModel(sequelize);
 const OrderProduct = OrderProductModel(sequelize);
 
 // Associações
-User.hasMany(Order, { foreignKey: 'userId', as: 'userOrders' });
-Order.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+User.hasMany(Order, { foreignKey: 'user_id', as: 'userOrders' });  // aqui também snake_case
+Order.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 
-Category.hasMany(Product, { foreignKey: 'categoryId', as: 'products' });
-Product.belongsTo(Category, { foreignKey: 'categoryId', as: 'category' });
+Category.hasMany(Product, { foreignKey: 'category_id', as: 'products' });
+Product.belongsTo(Category, { foreignKey: 'category_id', as: 'category' });
 
 Order.belongsToMany(Product, {
   through: OrderProduct,

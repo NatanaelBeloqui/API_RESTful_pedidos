@@ -7,14 +7,14 @@ export default (sequelize) => {
       autoIncrement: true,
       primaryKey: true,
     },
-    userId: {
+    userId: { // nome da propriedade em JS
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'users',
         key: 'id',
       },
-      field: 'userId',
+      field: 'user_id', // nome da coluna no banco (snake_case)
     },
   }, {
     tableName: 'orders',

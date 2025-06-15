@@ -24,12 +24,8 @@ import orderController from '../controllers/orderController.js';
  *           schema:
  *             type: object
  *             required:
- *               - userId
  *               - products
  *             properties:
- *               userId:
- *                 type: integer
- *                 example: 3
  *               products:
  *                 type: array
  *                 description: Lista de produtos com seus respectivos IDs e quantidades

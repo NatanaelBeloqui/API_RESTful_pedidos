@@ -2,7 +2,8 @@ import { Order, Product, User } from '../models/index.js';
 
 const createOrder = async (req, res) => {
   try {
-    const { userId, products } = req.body;
+    const userId = req.user.id; // pegar do token
+    const { products } = req.body;
 
     const user = await User.findByPk(userId);
     if (!user) return res.status(400).json({ message: 'Usuário inválido.' });
@@ -19,12 +20,14 @@ const createOrder = async (req, res) => {
         await order.destroy();
         return res.status(400).json({ message: `Produto inválido: ${item.productId}` });
       }
+      // Usa o alias 'products' para o método gerado pelo belongsToMany
       await order.addProduct(product, { through: { quantity: item.quantity || 1 } });
     }
 
     const orderWithProducts = await Order.findByPk(order.id, {
       include: {
         model: Product,
+        as: 'products',  // usar alias exato definido nas associações
         through: { attributes: ['quantity'] },
       },
     });
