@@ -6,7 +6,6 @@ const saltRounds = 10;
 const jwtSecret = process.env.JWT_SECRET || 'secret'; // ajuste para sua variável de ambiente
 const jwtExpiresIn = process.env.JWT_EXPIRES_IN || '1h';
 
-// Criar usuário
 export const createUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -27,7 +26,6 @@ export const createUser = async (req, res) => {
   }
 };
 
-// Login
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -51,7 +49,6 @@ export const login = async (req, res) => {
   }
 };
 
-// Retorna perfil do usuário autenticado
 export const getProfile = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -71,7 +68,6 @@ export const getProfile = async (req, res) => {
   }
 };
 
-// Atualizar perfil do usuário autenticado (nome e email)
 export const updateProfile = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -95,7 +91,6 @@ export const updateProfile = async (req, res) => {
   }
 };
 
-// Alterar senha do usuário autenticado
 export const changePassword = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -121,7 +116,6 @@ export const changePassword = async (req, res) => {
   }
 };
 
-// Deletar conta do usuário autenticado
 export const deleteUser = async (req, res) => {
   try {
     const userId = req.user.id;

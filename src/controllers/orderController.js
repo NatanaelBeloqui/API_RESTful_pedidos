@@ -42,10 +42,11 @@ const createOrder = async (req, res) => {
 const getOrdersByUser = async (req, res) => {
   try {
     const orders = await Order.findAll({
-      where: { userId: req.user.id }, // somente os pedidos do usuário autenticado
+      where: { user_id: req.user.id }, // certifique que a FK está 'user_id' conforme seu model
       include: [
         {
           model: Product,
+          as: 'products',  // importante usar o alias da associação
           through: { attributes: ['quantity'] },
         },
       ],
@@ -61,7 +62,11 @@ const getOrderById = async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id, {
       include: [
-        { model: Product, through: { attributes: ['quantity'] } },
+        {
+          model: Product,
+          as: 'products',  // mesmo alias aqui
+          through: { attributes: ['quantity'] },
+        },
       ],
     });
     if (!order) return res.status(404).json({ message: 'Pedido não encontrado.' });

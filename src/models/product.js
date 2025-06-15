@@ -2,19 +2,9 @@ import { DataTypes } from 'sequelize';
 
 export default (sequelize) => {
   const Product = sequelize.define('Product', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    price: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
-    },
+    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+    name: { type: DataTypes.STRING, allowNull: false },
+    price: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
     categoryId: {
       type: DataTypes.INTEGER,
       allowNull: true,
@@ -22,7 +12,7 @@ export default (sequelize) => {
         model: 'categories',
         key: 'id',
       },
-      field: 'categoryId',
+      field: 'category_id', // <- CORRETO
     },
   }, {
     tableName: 'products',
