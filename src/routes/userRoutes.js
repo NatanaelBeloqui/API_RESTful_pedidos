@@ -28,13 +28,13 @@ import auth from '../middlewares/authMiddleware.js';
  *             properties:
  *               name:
  *                 type: string
- *                 example: João Silva
+ *                 example: Natanael Barros
  *               email:
  *                 type: string
- *                 example: joao@email.com
+ *                 example: natanael.barros@email.com
  *               password:
  *                 type: string
- *                 example: senhaSegura123
+ *                 example: 123
  *     responses:
  *       201:
  *         description: Usuário registrado com sucesso
@@ -60,10 +60,10 @@ import auth from '../middlewares/authMiddleware.js';
  *             properties:
  *               email:
  *                 type: string
- *                 example: joao@email.com
+ *                 example: natanael.barros@email.com
  *               password:
  *                 type: string
- *                 example: senhaSegura123
+ *                 example: 123
  *     responses:
  *       200:
  *         description: Login realizado com sucesso
@@ -98,10 +98,10 @@ import auth from '../middlewares/authMiddleware.js';
  *             properties:
  *               name:
  *                 type: string
- *                 example: João Atualizado
+ *                 example: Natanael Atualizado
  *               email:
  *                 type: string
- *                 example: novoemail@email.com
+ *                 example: natanael.atualizado@email.com
  *     responses:
  *       200:
  *         description: Perfil atualizado com sucesso
@@ -139,10 +139,10 @@ import auth from '../middlewares/authMiddleware.js';
  *             properties:
  *               currentPassword:
  *                 type: string
- *                 example: senhaAntiga123
+ *                 example: 123
  *               newPassword:
  *                 type: string
- *                 example: senhaNova456
+ *                 example: novaSenha456
  *     responses:
  *       200:
  *         description: Senha alterada com sucesso
