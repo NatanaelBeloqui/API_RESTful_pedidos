@@ -15,7 +15,7 @@ export const createProduct = async (req, res) => {
 
 export const findAllProducts = async (req, res) => {
   try {
-    const products = await Product.findAll({ include: Category });
+    const products = await Product.findAll({ include: { model: Category, as: 'category' } });
     return res.json(products);
   } catch (error) {
     console.error(error);
