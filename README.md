@@ -19,7 +19,7 @@ Permite cadastro e autenticação de usuários, CRUD completo para produtos, cat
 1. Clone o repositório:
 
   ```bash
-  git clone <url-do-repositorio>
+  git clone <https://github.com/NatanaelBeloqui/API_RESTful_pedidos.git>
   cd api_restful_pedidos
 
 2. Instale as dependências:
