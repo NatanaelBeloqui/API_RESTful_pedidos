@@ -25,7 +25,7 @@ export const findAllProducts = async (req, res) => {
 
 export const findProductById = async (req, res) => {
   try {
-    const product = await Product.findByPk(req.params.id, { include: Category });
+    const product = await Product.findByPk(req.params.id, { include: { model: Category, as: 'category' } });
     if (!product) return res.status(404).json({ message: 'Produto não encontrado.' });
     return res.json(product);
   } catch (error) {
