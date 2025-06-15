@@ -16,9 +16,9 @@ Permite cadastro e autenticação de usuários, CRUD completo para produtos, cat
 
 ## Instalação
 
+```
 1. Clone o repositório:
 
-  ```bash
   git clone <https://github.com/NatanaelBeloqui/API_RESTful_pedidos.git>
   cd api_restful_pedidos
 
@@ -27,6 +27,7 @@ Permite cadastro e autenticação de usuários, CRUD completo para produtos, cat
   npm install
 
 3. Configure as variáveis de ambiente no arquivo .env:
+
   PORT=3000
   DB_HOST=localhost
   DB_PORT=3306
@@ -43,11 +44,12 @@ Permite cadastro e autenticação de usuários, CRUD completo para produtos, cat
 5. Inicie a aplicação:
 
   npm start
-
+```
 
 # Endpoints Principais
 
 ## Usuários
+
 - POST /users/register - Registro de novo usuário
 - POST /users/login - Login e obtenção de token JWT
 - GET /users/me - Dados do usuário autenticado
@@ -56,6 +58,7 @@ Permite cadastro e autenticação de usuários, CRUD completo para produtos, cat
 - DELETE /users/me - Exclusão da conta do usuário autenticado
 
 ## Categorias
+
 - GET /categories - Listar todas as categorias
 - POST /categories - Criar nova categoria (autenticado)
 - GET /categories/{id} - Obter categoria por ID
@@ -63,6 +66,7 @@ Permite cadastro e autenticação de usuários, CRUD completo para produtos, cat
 - DELETE /categories/{id} - Excluir categoria (autenticado)
 
 ## Produtos
+
 - GET /products - Listar todos os produtos
 - POST /products - Criar novo produto (autenticado)
 - GET /products/{id} - Obter produto por ID
@@ -70,18 +74,22 @@ Permite cadastro e autenticação de usuários, CRUD completo para produtos, cat
 - DELETE /products/{id} - Excluir produto (autenticado)
 
 ## Pedidos
+
 - POST /orders - Criar novo pedido (autenticado)
 - GET /orders - Listar pedidos do usuário autenticado
 - GET /orders/{id} - Obter pedido por ID (autenticado)
 - DELETE /orders/{id} - Cancelar pedido (autenticado)
 
 ## Autenticação
+
 - A API utiliza JWT para autenticação. Após o login, o token deve ser enviado no header das requisições protegidas:
-
+```
 Authorization: Bearer <token>
-
+```
 ## Documentação
-- A documentação completa dos endpoints está disponível via Swagger. Após iniciar a aplicação, acesse:
 
+- A documentação completa dos endpoints está disponível via Swagger. Após iniciar a aplicação, acesse:
+```
 http://localhost:<PORT>/api-docs
+```
 Lá é possível visualizar e testar todos os endpoints da API.
