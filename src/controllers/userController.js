@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { User } from '../models/index.js';
 
 const saltRounds = 10;
-const jwtSecret = process.env.JWT_SECRET || 'secret'; // ajuste para sua variável de ambiente
+const jwtSecret = process.env.JWT_SECRET || 'secret';
 const jwtExpiresIn = process.env.JWT_EXPIRES_IN || '1h';
 
 export const createUser = async (req, res) => {

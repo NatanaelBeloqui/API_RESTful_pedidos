@@ -16,7 +16,7 @@ const createCategory = async (req, res) => {
 const findAllCategories = async (req, res) => {
   try {
     const categories = await Category.findAll({
-      order: [['id', 'ASC']] // <-- aqui a mágica acontece
+      order: [['id', 'ASC']]
     });
     return res.json(categories);
   } catch (error) {

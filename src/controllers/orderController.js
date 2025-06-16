@@ -2,7 +2,7 @@ import { Order, Product, User } from '../models/index.js';
 
 const createOrder = async (req, res) => {
   try {
-    const userId = req.user.id; // pegar do token
+    const userId = req.user.id;
     const { products } = req.body;
 
     const user = await User.findByPk(userId);
@@ -20,14 +20,13 @@ const createOrder = async (req, res) => {
         await order.destroy();
         return res.status(400).json({ message: `Produto inválido: ${item.productId}` });
       }
-      // Usa o alias 'products' para o método gerado pelo belongsToMany
       await order.addProduct(product, { through: { quantity: item.quantity || 1 } });
     }
 
     const orderWithProducts = await Order.findByPk(order.id, {
       include: {
         model: Product,
-        as: 'products',  // usar alias exato definido nas associações
+        as: 'products',
         through: { attributes: ['quantity'] },
       },
     });
@@ -42,11 +41,11 @@ const createOrder = async (req, res) => {
 const getOrdersByUser = async (req, res) => {
   try {
     const orders = await Order.findAll({
-      where: { user_id: req.user.id }, // certifique que a FK está 'user_id' conforme seu model
+      where: { user_id: req.user.id },
       include: [
         {
           model: Product,
-          as: 'products',  // importante usar o alias da associação
+          as: 'products',
           through: { attributes: ['quantity'] },
         },
       ],
@@ -64,7 +63,7 @@ const getOrderById = async (req, res) => {
       include: [
         {
           model: Product,
-          as: 'products',  // mesmo alias aqui
+          as: 'products',
           through: { attributes: ['quantity'] },
         },
       ],

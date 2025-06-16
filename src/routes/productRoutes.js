@@ -1,4 +1,3 @@
-// src/routes/productRoutes.js
 import { Router } from 'express';
 import auth from '../middlewares/authMiddleware.js';
 import { 

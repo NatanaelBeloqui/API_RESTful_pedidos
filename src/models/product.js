@@ -12,7 +12,7 @@ export default (sequelize) => {
         model: 'categories',
         key: 'id',
       },
-      field: 'category_id', // <- CORRETO
+      field: 'category_id',
     },
   }, {
     tableName: 'products',
