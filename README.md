@@ -48,14 +48,8 @@ Permite cadastro e autenticação de usuários, CRUD completo para produtos, cat
 
 # Endpoints Principais
 
-<<<<<<< HEAD
-# Endpoints Principais
-
-## Usuários
-=======
 ## Usuários
 
->>>>>>> 0b3d25de0de48f094695fbed5fd7537ce764347e
 - POST /users/register - Registro de novo usuário
 - POST /users/login - Login e obtenção de token JWT
 - GET /users/me - Dados do usuário autenticado
@@ -64,7 +58,6 @@ Permite cadastro e autenticação de usuários, CRUD completo para produtos, cat
 - DELETE /users/me - Exclusão da conta do usuário autenticado
 
 ## Categorias
-<<<<<<< HEAD
 - GET /categories - Listar todas as categorias
 - POST /categories - Criar nova categoria (autenticado)
 - GET /categories/{id} - Obter categoria por ID
@@ -85,44 +78,14 @@ Permite cadastro e autenticação de usuários, CRUD completo para produtos, cat
 - DELETE /orders/{id} - Cancelar pedido (autenticado)
 
 ## Autenticação
-- A API utiliza JWT para autenticação. Após o login, o token deve ser enviado no header das requisições protegidas:
-=======
-
-- GET /categories - Listar todas as categorias
-- POST /categories - Criar nova categoria (autenticado)
-- GET /categories/{id} - Obter categoria por ID
-- PUT /categories/{id} - Atualizar categoria (autenticado)
-- DELETE /categories/{id} - Excluir categoria (autenticado)
-
-## Produtos
-
-- GET /products - Listar todos os produtos
-- POST /products - Criar novo produto (autenticado)
-- GET /products/{id} - Obter produto por ID
-- PUT /products/{id} - Atualizar produto (autenticado)
-- DELETE /products/{id} - Excluir produto (autenticado)
-
-## Pedidos
-
-- POST /orders - Criar novo pedido (autenticado)
-- GET /orders - Listar pedidos do usuário autenticado
-- GET /orders/{id} - Obter pedido por ID (autenticado)
-- DELETE /orders/{id} - Cancelar pedido (autenticado)
-
-## Autenticação
->>>>>>> 0b3d25de0de48f094695fbed5fd7537ce764347e
 
 - A API utiliza JWT para autenticação. Após o login, o token deve ser enviado no header das requisições protegidas:
+
 ```
 Authorization: Bearer <token>
-<<<<<<< HEAD
+```
 
 ## Documentação
-- A documentação completa dos endpoints está disponível via Swagger. Após iniciar a aplicação, acesse:
-=======
-```
-## Documentação
->>>>>>> 0b3d25de0de48f094695fbed5fd7537ce764347e
 
 - A documentação completa dos endpoints está disponível via Swagger. Após iniciar a aplicação, acesse:
 ```
